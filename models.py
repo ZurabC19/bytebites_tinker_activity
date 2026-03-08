@@ -40,6 +40,12 @@ class Menu:
     
     def addItem(self, item: FoodItem) -> None:
         self._items.append(item)
+    
+    def sortByPrice(self) -> list[FoodItem]:
+        return sorted(self._items, key=lambda item: item.getPrice())
+    
+    def sortByPopularity(self) -> list[FoodItem]:
+        return sorted(self._items, key=lambda item: item.getPopularityRating(), reverse=True)
 
 
 class Order:
@@ -72,3 +78,21 @@ class Customer:
     def addOrder(self, order: Order) -> None:
         self._purchaseHistory.append(order)
 
+if __name__ == "__main__":
+    burger = FoodItem("Spicy Burger", Decimal("9.99"), "Mains", 4.5)
+    soda = FoodItem("Large Soda", Decimal("2.49"), "Drinks", 3.8)
+    dessert = FoodItem("Ice Cream", Decimal("4.99"), "Desserts", 4.9)
+
+    menu = Menu()
+    menu.addItem(burger)
+    menu.addItem(soda)
+    menu.addItem(dessert)
+
+    print([i.getName() for i in menu.sortByPrice()])       # cheapest first
+    print([i.getName() for i in menu.sortByPopularity()])  # highest rated first
+    print([i.getName() for i in menu.filterByCategory("Drinks")])
+
+    order = Order()
+    order.addItem(burger)
+    order.addItem(soda)
+    print(order.getTotalCost())  # 12.48
